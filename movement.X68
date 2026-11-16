@@ -9,56 +9,55 @@ START:                                  ; first instruction of program
 
 * Put program code here
 _MAIN:
-                jsr         CHECK_ARROWS
+LOOP:           jsr         CHECK_ARROWS
+                jsr         SLEEP
+                bra         LOOP
+                jsr         _END
 CHECK_ARROWS:                           ; get arrow inputs
                 move.b      #19,d0    
                 move.l      #$25262728,d1
                 trap        #15
                 
-                cmpi.b      #0,d1
+                tst.b       d1
                 bne         DOWN
 
                 lsr.l       #8,d1
-                cmpi.b      #0,d1
+                tst.b       d1
                 bne         RIGHT
                 
                 lsr.l       #8,d1
-                cmpi.b      #0,d1
+                tst.b       d1
                 bne         UP
                 
                 lsr.l       #8,d1
-                cmpi.b      #0,d1
+                tst.b       d1
                 bne         LEFT
+                rts
                 
-                jsr         CHECK_ARROWS
 DOWN:
                 move.b      #6,d0
                 move.b      #'v',d1
                 trap        #15
-                jsr         SLEEP
                 rts
 RIGHT:          
                 move.b      #6,d0
                 move.b      #'>',d1
                 trap        #15
-                jsr         SLEEP
                 rts
 UP:
                 move.b      #6,d0
                 move.b      #'^',d1
                 trap        #15
-                jsr         SLEEP
                 rts
 LEFT:
                 move.b      #6,d0
                 move.b      #'<',d1
                 trap        #15
-                jsr         SLEEP
                 rts
                 
 SLEEP:
                 move.b      #23,d0
-                move.l      #1000,d1
+                move.l      #1,d1
                 trap        #15
                 rts
 
