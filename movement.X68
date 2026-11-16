@@ -30,26 +30,35 @@ CHECK_ARROWS:                           ; get arrow inputs
                 cmpi.b      #0,d1
                 bne         LEFT
                 
-                bra         CHECK_ARROWS
-                rts
+                jsr         CHECK_ARROWS
 DOWN:
-                move.b      #15,d0
+                move.b      #6,d0
                 move.b      #'v',d1
                 trap        #15
+                jsr         SLEEP
                 rts
 RIGHT:          
-                move.b      #15,d0
+                move.b      #6,d0
                 move.b      #'>',d1
                 trap        #15
+                jsr         SLEEP
                 rts
 UP:
-                move.b      #15,d0
+                move.b      #6,d0
                 move.b      #'^',d1
                 trap        #15
+                jsr         SLEEP
                 rts
 LEFT:
-                move.b      #15,d0
+                move.b      #6,d0
                 move.b      #'<',d1
+                trap        #15
+                jsr         SLEEP
+                rts
+                
+SLEEP:
+                move.b      #23,d0
+                move.l      #1000,d1
                 trap        #15
                 rts
 
