@@ -10,7 +10,6 @@ START:                                  ; first instruction of program
 * Put program code here
 _MAIN:
                 jsr         CHECK_ARROWS
-                jsr         _END
 CHECK_ARROWS:                           ; get arrow inputs
                 move.b      #19,d0    
                 move.l      #$25262728,d1
@@ -19,26 +18,40 @@ CHECK_ARROWS:                           ; get arrow inputs
                 cmpi.b      #0,d1
                 bne         DOWN
 
-                lsr.l       #8,dl
+                lsr.l       #8,d1
                 cmpi.b      #0,d1
                 bne         RIGHT
                 
-                lsr.l       #8,dl
+                lsr.l       #8,d1
                 cmpi.b      #0,d1
                 bne         UP
                 
-                lsr.l       #8,dl
+                lsr.l       #8,d1
                 cmpi.b      #0,d1
                 bne         LEFT
+                
+                bra         CHECK_ARROWS
                 rts
 DOWN:
                 move.b      #15,d0
                 move.b      #'v',d1
                 trap        #15
                 rts
-RIGHT:
+RIGHT:          
+                move.b      #15,d0
+                move.b      #'>',d1
+                trap        #15
+                rts
 UP:
+                move.b      #15,d0
+                move.b      #'^',d1
+                trap        #15
+                rts
 LEFT:
+                move.b      #15,d0
+                move.b      #'<',d1
+                trap        #15
+                rts
 
                 
                 
