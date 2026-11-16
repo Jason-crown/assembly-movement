@@ -8,6 +8,9 @@
 START:                                  ; first instruction of program
 
 * Put program code here
+_MAIN:
+                jsr         CHECK_ARROWS
+                jsr         _END
 CHECK_ARROWS:                           ; get arrow inputs
                 move.b      #19,d0    
                 move.l      #$25262728,d1
@@ -27,10 +30,20 @@ CHECK_ARROWS:                           ; get arrow inputs
                 lsr.l       #8,dl
                 cmpi.b      #0,d1
                 bne         LEFT
+                rts
+DOWN:
+                move.b      #15,d0
+                move.b      #'v',d1
+                trap        #15
+                rts
+RIGHT:
+UP:
+LEFT:
+
                 
                 
 
-                
+_END:                
     SIMHALT                             ; halt simulator
 
 * Put variables and constants here
