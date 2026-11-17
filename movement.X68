@@ -21,6 +21,10 @@ _MAIN:
                 move.w      #0,YO(a6)
                 move.w      #100,XS(a6)
                 move.w      #100,YS(a6)
+                move.w      XO(a6),-(a7)
+                move.w      YO(a6),-(a7)
+                move.w      XS(a6),-(a7)
+                move.w      YS(a6),-(a7)
                 jsr         _SHAPE          ; d1.w = x offset d2.w = y offset, d3.w = Width, d4.w = Height
 LOOP:           jsr         CHECK_ARROWS
                 jsr         CLEAR
@@ -113,6 +117,7 @@ _END:
 * Put variables and constants here
 
     END    START        ; last line of source
+
 
 *~Font name~Courier New~
 *~Font size~10~
