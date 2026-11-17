@@ -6,10 +6,10 @@
 *-----------------------------------------------------------
     ORG    $1000
 START:                                  ; first instruction of program
-XO    equ    16
-YO    equ    12
-XS    equ    8
-YS    equ    4
+XO    equ    20
+YO    equ    16
+XS    equ    12
+YS    equ    8
 SXO   equ    -4
 FLAG  equ    -8 
 * Put program code here
@@ -21,6 +21,12 @@ _MAIN:
                 move.w      #0,d2
                 move.w      #100,d3
                 move.w      #100,d4
+                move.w      d1,-(a7)
+                move.w      d2,-(a7)
+                move.w      d3,-(a7)
+                move.w      d4,-(a7)
+                
+                
                 jsr         _SHAPE          ; d1.w = x offset d2.w = y offset, d3.w = Width, d4.w = Height
 LOOP:           jsr         CHECK_ARROWS
                 jsr         SLEEP
@@ -76,6 +82,11 @@ _SET_COLOR:                 ; $00BBGGRR
                 rts
 
 _SHAPE:
+                link        a6,#0
+                move.l      8(a6),d4
+                move.l      12(a6),d3
+                move.l      16(a6),d2
+                move.l      20(a6),d1
                 move.w      #-1,d6
                 move.w      d1,d5
 loop2:    
