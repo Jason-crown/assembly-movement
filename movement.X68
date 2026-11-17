@@ -17,14 +17,10 @@ _MAIN:
                 link        a6,#0
                 move.l      #$00FFFFFF,d1
                 jsr         _SET_COLOR      ; set color in d1.l
-                move.w      #0,XO(a6)
-                move.w      #0,YO(a6)
-                move.w      #100,XS(a6)
-                move.w      #100,YS(a6)
-                move.w      XO(a6),-(a7)
-                move.w      YO(a6),-(a7)
-                move.w      XS(a6),-(a7)
-                move.w      YS(a6),-(a7)
+                move.w      #0,d1
+                move.w      #0,d2
+                move.w      #100,d3
+                move.w      #100,d4
                 jsr         _SHAPE          ; d1.w = x offset d2.w = y offset, d3.w = Width, d4.w = Height
 LOOP:           jsr         CHECK_ARROWS
                 jsr         CLEAR
@@ -85,21 +81,21 @@ _SHAPE:
                 link        a6,#0
                 movem       d0-d6,-(a7)
                 move.w      #-1,FLAG(a6)
-                move.w      XO(a6),SXO(a6)
+                move.w      d1,SXO(a6)
 loop2:    
 loop1:  
-                addq.w      #1,XO(a6)
+                addq.w      #1,d1
                 move.b      #82,d0          ; Task 82: Draw pixel in pen color
                 trap        #15             ; Execute simulator task
-                move.l      XO(a6),d0
-                cmp         XS(a6),d0          ; Width
+                move.l      d1,d0
+                cmp         d3,d0          ; Width
                 blo         loop1
-                addq.w      #1,YO(a6)
+                addq.w      #1,d3
                 
                 move.w      SXO(a6),XO(a6)
                 
-                move.l      YO(a6),d0
-                cmp         YS(a6),d0          ; Height
+                move.l      d3,d0
+                cmp         d4,d0          ; Height
                 blo         loop2
                 movem.l     (a7)+,d0-d6
                 unlk        a6
