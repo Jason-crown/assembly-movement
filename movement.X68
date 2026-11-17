@@ -23,8 +23,6 @@ _MAIN:
                 move.w      #100,d4
                 jsr         _SHAPE          ; d1.w = x offset d2.w = y offset, d3.w = Width, d4.w = Height
 LOOP:           jsr         CHECK_ARROWS
-                jsr         CLEAR
-                jsr         _SHAPE
                 jsr         SLEEP
                 bra         LOOP
                 jsr         _END
@@ -78,10 +76,8 @@ _SET_COLOR:                 ; $00BBGGRR
                 rts
 
 _SHAPE:
-                link        a6,#0
-                movem       d0-d6,-(a7)
-                move.w      #-1,FLAG(a6)
-                move.w      d1,SXO(a6)
+                move.w      #-1,d6
+                move.w      d1,d5
 loop2:    
 loop1:  
                 addq.w      #1,d1
@@ -90,15 +86,13 @@ loop1:
                 move.l      d1,d0
                 cmp         d3,d0          ; Width
                 blo         loop1
-                addq.w      #1,d3
+                addq.w      #1,d2
                 
-                move.w      SXO(a6),XO(a6)
+                move.w      d5,d1
                 
-                move.l      d3,d0
-                cmp         d4,d0          ; Height
+                move.l      d2,d0
+                cmp         d3,d0          ; Height
                 blo         loop2
-                movem.l     (a7)+,d0-d6
-                unlk        a6
                 rts
 
                 
