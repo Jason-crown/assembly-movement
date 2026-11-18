@@ -38,7 +38,8 @@ LOOP:
                 bra         LOOP
                 jsr         _END
 CHECK_ARROWS:                           ; get arrow inputs\
-                movem.l     d0-d1,-(sp)
+                move.w      d0,d6
+                move.w      d1,d7
                 move.b      #19,d0    
                 move.l      #$25262728,d1
                 trap        #15
@@ -57,7 +58,8 @@ CHECK_ARROWS:                           ; get arrow inputs\
                 lsr.l       #8,d1
                 tst.b       d1
                 bne         LEFT
-                movem.l     (sp)+,d0-d1
+                move.w      d6,d0
+                move.w      d7,d1                
                 rts
                 
 DOWN:
@@ -65,7 +67,7 @@ DOWN:
                 addi        #10,d4               
                 rts
 RIGHT:           
-                ;addi        #10,d1 
+                addi        #10,d7 
                 addi        #10,d3
                 rts
 UP:
@@ -73,7 +75,7 @@ UP:
                 subi        #10,d4
                 rts
 LEFT:
-                ;subi        #10,d1 
+                subi        #10,d7 
                 subi        #10,d3                
                 rts
                 
@@ -110,7 +112,7 @@ loop1:
                 addq.w      #1,d1
                 move.b      #82,d0          ; Task 82: Draw pixel in pen color
                 trap        #15             ; Execute simulator task
-                cmp         d3,d1          ; Width
+                cmp         d3,d1           ; Width
                 blo         loop1
                 addq.w      #1,d2
                 move.w      d5,d1
@@ -132,6 +134,7 @@ _END:
 * Put variables and constants here
 
     END    START        ; last line of source
+
 
 
 
