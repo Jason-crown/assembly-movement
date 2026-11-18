@@ -14,7 +14,7 @@ SXO     equ     -2
 * Put program code here
     ; set defaults
     move.l  #$00FF00FF,d1   ; default purple
-    jsr     MAIN
+    jsr     Main
     
 _SET_COLOR:                 ; $00BBGGRR
     move.b  #80,d0          ; Task 80: Set pen color
@@ -48,15 +48,16 @@ loop1:
 Main:           
                 move.l      #$00FF00FF,d1
                 jsr         _SET_COLOR
-                move.w      #300,d2
-                move.w      #300,d3
-                move.w      #350,d4
-                move.w      #350,d5
+                move.w      #100,d2
+                move.w      #100,d3
+                move.w      #150,d4
+                move.w      #150,d5
 LOOP:           jsr         CHECK_ARROWS
                 move.w      d2,-(a7)
                 move.w      d3,-(a7)
                 move.w      d4,-(a7)
                 move.w      d5,-(a7)
+        
                 jsr         _SHAPE
                 jsr         SLEEP
                 jsr         LOOP
@@ -121,8 +122,9 @@ CHECK_ARROWS:                           ; get arrow inputs\
                 rts
                 
 DOWN:
-                addi        #25,d3
-                addi        #25,d4
+                move.w      #6,d0
+                move.w      #'D',d1
+                trap        #15
                 rts
 RIGHT:           
                 move.w      #6,d0
@@ -145,6 +147,13 @@ SLEEP:
                 move.l      #5,d1
                 trap        #15
                 movem.l     (sp)+,d0-d1
+                rts
+CLEAR:          
+                movem.l     d0-d1,-(sp)
+                move.w      #$FF00,d1
+                move.b      #11,d0
+                trap        #15
+                movem.l     (sp)+,d0-d1                
                 rts                
 
     SIMHALT             ; halt simulator
