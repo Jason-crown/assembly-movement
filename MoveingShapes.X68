@@ -57,9 +57,10 @@ LOOP:           jsr         CHECK_ARROWS
                 move.w      d3,-(a7)
                 move.w      d4,-(a7)
                 move.w      d5,-(a7)
-        
+                
                 jsr         _SHAPE
                 jsr         SLEEP
+                jsr         CLEAR
                 jsr         LOOP
 
 CHECK_ARROWS:                           ; get arrow inputs\
@@ -161,6 +162,7 @@ CLEAR:
 * Put variables and constants here
 
     END    START        ; last line of source
+
 
 *~Font name~Courier New~
 *~Font size~10~
