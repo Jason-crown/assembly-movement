@@ -22,12 +22,13 @@ _SET_COLOR:                 ; $00BBGGRR
     rts
 
 _SHAPE:
+    * Set offsets to data registers
     link    a6,#-2
     move.w  XO(a6),d1
     move.w  YO(a6),d2
     move.w  XS(a6),d3
     move.w  YS(a6),d4
-    move.w  d1,SXO(a6)
+    move.w  d1,SXO(a6)      ;saving d1
 loop2:    
 loop1:  
     addq.w  #1,d1
@@ -37,7 +38,7 @@ loop1:
     blo     loop1
     addq.w  #1,d2
     
-    move.w  SXO(a6),d1
+    move.w  SXO(a6),d1      ; returning saved register
 
    
     cmp     d4,d2          ; Height
@@ -54,9 +55,11 @@ Main:
                 move.w      #150,d4
                 move.w      #150,d5
 
+                * Main loop
 LOOP:           
                 * Run Arrow check
                 jsr         CHECK_ARROWS
+                
                 * Input Shape info
                 move.w      d2,-(a7)
                 move.w      d3,-(a7)
@@ -64,13 +67,15 @@ LOOP:
                 move.w      d5,-(a7)
                 jsr         _SHAPE
                 addq.L      #8,a7
+                
                 * Pause Execution
                 move.w      #5,-(a7)
                 jsr         SLEEP
                 addq.L      #2,a7
                 * LOOP
                 jsr         LOOP
-
+                
+                *Gets arrow inputs
 CHECK_ARROWS:                           ; get arrow inputs\
                 move.b      #19,d0    
                 move.l      #$25262728,d1 ; Checks, left = 25 up = 26 right = 27 down = 28
@@ -129,7 +134,7 @@ CHECK_ARROWS:                           ; get arrow inputs\
                 tst.b       d1
                 bne         LEFT                  
                 rts
-                
+                * MOVEMENT subroutines
 DOWN:
                 move.w      #6,d0
                 move.w      #'D',d1
@@ -150,6 +155,8 @@ LEFT:
                 move.w      #'L',d1
                 trap        #15               
                 rts
+                
+                *Pauses program exacution
 SLEEP:
                 movem.l     d0-d1,-(sp)
                 clr.l       d1
@@ -158,6 +165,8 @@ SLEEP:
                 trap        #15
                 movem.l     (sp)+,d0-d1
                 rts
+                
+                *Clears board
 CLEAR:          
                 movem.l     d0-d1,-(sp)
                 move.w      #$FF00,d1
