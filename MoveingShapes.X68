@@ -58,8 +58,10 @@ LOOP:           jsr         CHECK_ARROWS
                 move.w      d4,-(a7)
                 move.w      d5,-(a7)
                 jsr         _SHAPE
+                addq.L      #8,a7
                 move.w      #5,-(a7)
                 jsr         SLEEP
+                addq.L      #2,a7
                 jsr         LOOP
 
 CHECK_ARROWS:                           ; get arrow inputs\
@@ -145,7 +147,7 @@ SLEEP:
                 link        a6,#0
                 movem.l     d0-d1,-(sp)
                 move.b      #23,d0
-                move.l      16(a6),d1
+                move.l      XO(a6),d1
                 trap        #15
                 movem.l     (sp)+,d0-d1
                 unlk        a6
