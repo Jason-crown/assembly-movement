@@ -146,8 +146,10 @@ LEFT:
 SLEEP:
                 link        a6,#0
                 movem.l     d0-d1,-(sp)
+                clr.l       d1
+                move.w      12(a7),d1
                 move.b      #23,d0
-                move.l      XO(a6),d1
+                ;move.l      4(a6),d1
                 trap        #15
                 movem.l     (sp)+,d0-d1
                 unlk        a6
