@@ -53,6 +53,7 @@ Main:
                 move.w      #100,d3
                 move.w      #150,d4
                 move.w      #150,d5
+
 LOOP:           
                 * Run Arrow check
                 jsr         CHECK_ARROWS
@@ -68,6 +69,18 @@ LOOP:
                 jsr         SLEEP
                 addq.L      #2,a7
                 * LOOP
+                * Pause Execution
+                move.w      #1000,-(a7)
+                jsr         SLEEP
+                addq.L      #2,a7
+                move.l      #$0000FFFF,d1
+                jsr         _SET_COLOR
+                move.w      #250,-(a7)
+                move.w      #250,-(a7)
+                move.w      #300,-(a7)
+                move.w      #300,-(a7)
+                jsr         _SHAPE
+                addq.L      #8,a7
                 jsr         LOOP
 
 CHECK_ARROWS:                           ; get arrow inputs\
