@@ -33,7 +33,7 @@ loop1:
     addq.w  #1,d1
     move.b  #82,d0          ; Task 82: Draw pixel in pen color
     trap    #15             ; Execute simulator task
-    cmp     d3,d1          ; Width
+    cmp     d3,d1           ; Width
     blo     loop1
     addq.w  #1,d2
     
@@ -46,27 +46,33 @@ loop1:
     rts
     
 Main:           
+                * Set default shape
                 move.l      #$00FF00FF,d1
                 jsr         _SET_COLOR
                 move.w      #100,d2
                 move.w      #100,d3
                 move.w      #150,d4
                 move.w      #150,d5
-LOOP:           jsr         CHECK_ARROWS
+LOOP:           
+                * Run Arrow check
+                jsr         CHECK_ARROWS
+                * Input Shape info
                 move.w      d2,-(a7)
                 move.w      d3,-(a7)
                 move.w      d4,-(a7)
                 move.w      d5,-(a7)
                 jsr         _SHAPE
                 addq.L      #8,a7
+                * Pause Execution
                 move.w      #5,-(a7)
                 jsr         SLEEP
                 addq.L      #2,a7
+                * LOOP
                 jsr         LOOP
 
 CHECK_ARROWS:                           ; get arrow inputs\
                 move.b      #19,d0    
-                move.l      #$25262728,d1
+                move.l      #$25262728,d1 ; Checks, left = 25 up = 26 right = 27 down = 28
                 trap        #15
                 
                 tst.b       d1
