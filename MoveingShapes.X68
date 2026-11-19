@@ -70,15 +70,19 @@ LOOP:
                 addq.L      #2,a7
                 * LOOP
                 * Pause Execution
-                move.w      #1000,-(a7)
+                move.w      #100,-(a7)
                 jsr         SLEEP
                 addq.L      #2,a7
-                move.l      #$0000FFFF,d1
+                addi.l       #10,d1
+                addi.w       #10,d2
+                addi.w       #10,d3
+                addi.w       #10,d4
+                addi.w       #10,d5
                 jsr         _SET_COLOR
-                move.w      #250,-(a7)
-                move.w      #250,-(a7)
-                move.w      #300,-(a7)
-                move.w      #300,-(a7)
+                move.w      d2,-(a7)
+                move.w      d3,-(a7)
+                move.w      d4,-(a7)
+                move.w      d5,-(a7)
                 jsr         _SHAPE
                 addq.L      #8,a7
                 jsr         LOOP
